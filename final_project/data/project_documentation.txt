@@ -1,0 +1,90 @@
+# Final project: Digital Analysis of the US Presidential Debates
+
+
+
+## General Description
+
+Name: Koji Okumura
+Course: Introduction to Programming, 2023/24 Winter Semester, at Graz University
+
+The theme of my final project is the digital analysis of the US presidential debates. I have analysed 
+transcripts of the US presidential debates, which are available at https://debates.org/voter-education/debate-transcripts/. I have tried three kinds of analysis: 1) making a word cloud, 2) making a list of frequent vocabulary in a given part of speech, and 3) sentiment analysis.
+
+We have the following modules to accomplish my project:
+- Requets and Beautiful Soup: to do scraping and fetching the data
+- Re: to use regular expressions
+- WordCloud: to make word clouds
+- Matplotlib: to draw images and graphs
+- Nltk: to analyse the language (tokenization, lemmatization, part of speech tagging, and sentiment analysis)
+- Pandas and Nampy: to handle tables skillfully
+
+
+
+## Input of the Information
+
+First, you copy and paste the URL of the transcript. Transcripts are available from this website: https://debates.org/voter-education/debate-transcripts/. If you want to analyse the final US presidential debate in 2016, for example, the URL is this: https://debates.org/voter-education/debate-transcripts/october-19-2016-debate-transcript/. I have confirmed that the codes below works for at least every transcript since 1996.
+
+Then, you write in the surnames of the speakers. You have to look at the transcript carefully and ensure you enter them correctly because they are essential for text cleansing. For example, the description “TRUMP: ” is a marker indicating the beginning of his discourse. If you follow the example above, you must enter “Clinton,” “Trump,” and “Wallace” in this order. In case you analyse a transcript in 2000, you must input ‘Moderator’ as a moderator’s name since “MODERATOR: ” is used as a marker in the transcript.
+
+
+
+## Scraping
+
+Fetch the text data from the website and write it into the text file. We use the two modules, Requets and Beautiful Soup, which are commonly used for scraping. The former module retrieves information from the webpage, and the latter extracts the data.
+
+Looking at the HTML on this website, you find the main text is written in the HTML tag <div id = “content-sm”>. The fetched data is archived in “raw_script.txt.”
+
+
+
+## Text Cleansing
+
+Remove the HTML tags, such as <p> and </p>, and other unnecessary information, such as [crosstalk] and (applause), and create a new text file named “script.txt.” I use regular expressions (regex) here. The order of using regex is also important because the raw script could have a part like [<em>applause</em>]. After counting the lines, we make a list to identify who speaks each line. For example, a Trump’s remark starts with a description of “TRUMP: ” and lasts until another person’s remark starts with “CLINTON: ” or “WALLACE: ”. Fortunately, since every transcript has this structure, we can identify the speaker this way.
+
+Using the list we have just made, split the transcript according to who the speaker is. Three text files named “script_dem.txt,” “script_rep.txt,” and “script_mod.txt” are created. At the same time, punctuations are removed.
+
+
+
+## Analysis 1: Word Cloud
+
+Make word clouds using WordCloud and Matplotlib modules. The list of stop words, which we remove from word clouds, is prepared in advance. The images of word clouds of the two candidates’ discourse are saved in the folder.
+
+It is difficult to determine what words we treat as stopwords. Here, I use the same stopwords we used in the class. For example, “going” usually looks big in word clouds. However, this might indicate that many politicians use high modality with confidence, as is seen in the phrase “be going to.”
+
+
+
+## Analysis 2: Frequent Vocabulary
+
+Tokenization and part-of-speech (POS) tagging are carried out using the Nltk module to generate frequent vocabulary lists and graphs in given POS (nouns, verbs, adjectives, and adverbs).
+
+Nltk gives us detailed POS information such as ‘NN’ and simplifies it like ‘Noun.’ We simplify POS tags, focusing on the first letter of Nltk POS tags. You can check what each pos tag stands for here: https://www.guru99.com/pos-tagging-chunking-nltk.html. 
+
+The “pos_analysis” function returns “word_count_list,” which has the following information: 1) words, 2) parts of speech, and 3) number of occurrences. The steps are like these:
+- Step 1: Read text files line by line, tokenizing and POS tagging using the Nltk module
+- Step 2: Lemmatize each token and change the POS tags
+- Step 3: Count how many times each headword appears in the text
+
+Here, Pandas and Numpy modules are used to handle tables skilfully. First, save the lists of all words in the discourse as csv files.
+
+Next, focus on the POS tags and save the word list for each POS as a csv file.
+
+Finally, a graph of the frequent vocabulary for each POS is drawn. And graphs are saved in the folder. We use the Matplotlib module to make graphs. In the example, the graphs are drawn for nouns that appear 15 times or more and adjectives that appear 5 times or more. In the “pos_graph” function, you can decide which POS tags you analyse and the minimum occurrences to be described in the graph.
+
+In the noun analysis, you can find what topic each candidate mentioned a lot. In the example, Hillary Clinton frequently mentioned women’s issues, while Donald Trump often mentioned border controls. Furthermore, Trump tends to use the same adjectives more. The maximum frequency of Clinton’s adjectives is 12 times, while Trump has 4 adjectives used more than 15 times.
+
+
+
+## Analysis 3: Sentiment Analysis
+
+I also tried sentiment analysis using the Nltk module. This model evaluates the degree to which a text is positive, negative, or neutral, with a value between 0 and 1. A positive score of 0 means not positive at all, and 1 means super positive.
+
+Display the average value of the sentiment of each speaker. Then, graphs of the change in sentiment throughout the debate are created. We use Pandas and Matplotlib modules for this process. We use moving averages for five lines so that the graphs are easier to see.
+
+In the example, high neutral scores might reflect the characteristics of political discourse. Donald Trump’s discourse was slightly more negative throughout the debate than Hillary Clinton’s. Interestingly, there are lines where Trump’s negative scores are higher than other parts, which is around line 160. Looking at the transcript, Trump repeatedly said “Wrong.” to deny Clinton’s insistence.
+
+
+
+## Summary
+
+In my final project, I analysed the transcripts of the US presidential debates. I analysed the text from three different points of view: word cloud, frequent vocabulary, and sentiment analysis. All analyses reflect the linguistic characteristics of the texts well. My further interest is analysing the relationship between words. I am interested in what words cooccur in the texts. Furthermore, the sentiment analysis used here is simple as it only analyses positive, negative, and neutral. I would like to try more detailed sentiment analysis with another module.
+
+The final project ends here. Thank you for seeing it through to the end!
